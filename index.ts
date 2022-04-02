@@ -41,6 +41,7 @@ app.use(express.static('public'));
         methods: methods,
         autoHandle: true
     });
+
 })()
 
 
