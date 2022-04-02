@@ -8,6 +8,7 @@ const app = express();
 
 app.use(cors());
 app.use(multer().any());
+app.use(express.static('public'));
 
 
 
