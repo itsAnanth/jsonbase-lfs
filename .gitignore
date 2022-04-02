@@ -4,3 +4,4 @@
 **/pnpm-lock.*
 **/*.log
 **/dist/
+**/uploads/
