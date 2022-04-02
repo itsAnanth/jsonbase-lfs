@@ -7,7 +7,7 @@ function onSubmit(e) {
 }
 
 function validateForm(customMessage) {
-    const uploadedFile = document.getElementById('pload').elements[0].files[0];
+    const uploadedFile = document.getElementById('upload').elements[0].files[0];
     if (!uploadedFile) {
         customMessage.innerHTML = "Please select a file to upload";
         return false;
@@ -44,7 +44,7 @@ function onComplete(event) {
         customMessage.innerHTML = response.error;
         customMessage.style.color = 'red';
     }
-    document.getElementById("submit").disabled = false;
+    // document.getElementById("submit").disabled = false;
 }
 
 function fileUploadPercentage(e) {
