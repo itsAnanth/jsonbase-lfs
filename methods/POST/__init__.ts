@@ -21,10 +21,9 @@ export default new http.Endpoint({
         console.log(hash);
 
         const chunks = chunk(file.buffer, 90, (i) => console.log(`processing ${i} %`));
+        const object = { chunks: chunks.length, format: file.originalname.slice(file.originalname.lastIndexOf('.')) };
 
-        await post(chunks.length.toString(), `${hash}/main`);
-
-        console.log(chunks.length);
+        await post(JSON.stringify(object), `${hash}/main`);
 
 
         for (let i = 0; i < chunks.length; i++) {
@@ -34,9 +33,6 @@ export default new http.Endpoint({
 
         console.log('finished');
         console.log(hash);
-
-        // fs.writeFileSync(`./uploads/${uuid}${file.originalname.slice(file.originalname.lastIndexOf('.'))}`, Buffer.concat(chunks))
-
     }
 })
 
