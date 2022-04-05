@@ -1,15 +1,16 @@
 import { http } from "adminhq";
 import crypto from 'crypto';
 import chunk from "../../modules/chunk";
-import fs from 'fs';
 import fetch from 'node-fetch';
+
+const { Response: r } = http;
 
 const jsonbase = 'https://jsonbase.com'
 
 export default new http.Endpoint({
     path: '/',
     type: 'post',
-    callback: async(req, _res) => {
+    callback: async(req, res) => {
         if (!req.files) return;
         if (!(req.files instanceof Array)) return;
         const file = req.files[0];
@@ -31,8 +32,10 @@ export default new http.Endpoint({
             console.log(`uploaded ${(i * 100 / chunks.length).toFixed(1)}`)
         }
 
-        console.log('finished');
-        console.log(hash);
+        res.status(r.status.OK).send(r.success({
+            // @ts-ignore
+            message: { id: hash, payload: object },
+        }))
     }
 })
 
