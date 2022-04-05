@@ -22,7 +22,7 @@ function validateForm(customMessage) {
 
 function uploadVideo(customMessage) {
     document.getElementById("submit").disabled = true;
-    customMessage.innerHTML = 'uploading video..'
+    customMessage.innerHTML = 'uploading file..'
     let formElement = document.getElementById("upload");
     let request = new XMLHttpRequest();
     request.open("POST", "/", true);
@@ -39,7 +39,7 @@ function onComplete(event) {
     if (response.success) {
         document.getElementById('main-div').style.display = 'none';
         customMessage.style.color = '#9C27B0';
-        customMessage.innerHTML = `Video Uploaded successfully!!. Please <a href=${response.message.link}>click here</a> to view the video.`;
+        customMessage.innerHTML = `File Uploaded successfully!!. Please <a href=http://localhost:3000/get?id=${response.message.id}>click here</a> to download the file.`;
     } else {
         customMessage.innerHTML = response.error;
         customMessage.style.color = 'red';
