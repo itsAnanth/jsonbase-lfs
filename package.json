@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "*",
-    "adminhq": "github:itsAnanth/adminhq",
+    "adminhq": "1.0.2",
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "multer": "^1.4.4",
