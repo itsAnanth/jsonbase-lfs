@@ -1,17 +1,32 @@
 import { http } from "adminhq";
 import fetch from 'node-fetch';
-import fs from 'fs';
+import { PassThrough } from 'stream';
 
 export default new http.Endpoint({
     path: '/get',
     type: 'get',
+    // @ts-ignore
     callback: async(req, res) => {
         const id = req.query.id;
         const jsonbase = 'https://jsonbase.com';
 
         const resp = await (await fetch(`${jsonbase}/${id}/main`)).json();
 
-        const len = parseInt(resp.data);
+        if (!(resp && resp.data)) return res.send(http.Response.error({
+            message: 'Document not found',
+            code: http.Response.status.BAD_REQUEST
+        }));
+
+        resp.data = JSON.parse(resp.data);
+
+        if (!resp.data.chunks)
+            return res.send(http.Response.error({
+                message: 'Malformed data',
+                code: http.Response.status.BAD_REQUEST
+            }));
+
+
+        const len = parseInt(resp.data.chunks);
         const arr = [];
 
         for (let i = 0; i < len; i++) {
@@ -21,15 +36,19 @@ export default new http.Endpoint({
         }
 
 
-        fs.writeFileSync(`./uploads/w.txt`, Buffer.concat(arr));
+  
+        const stream = new PassThrough();
+        stream.end(Buffer.concat(arr));
+
+        res.set('Content-disposition', `attachment; filename=file${resp.data.format}`);
+        // res.set('Content-Type', 'text/plain');
+
+        // res.status(http.Response.status.OK).send(http.Response.success({
+        //     message: 'success'
+        // }));
+
+        stream.pipe(res);
 
 
-        //ebe7824c04265fe0b4f581ac7aa471ff8d94fb8907d3c7a1f33b6b603a69048a
-
-        
-        res.send(http.Response.success({
-            message: 'Reached server',
-            code: http.Response.status.OK
-        }))
     }
 })
